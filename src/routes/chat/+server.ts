@@ -6,7 +6,7 @@ import { OPENAI_KEY, ORG_KEY } from '$env/static/private';
 // Create an OpenAI API client (that's edge friendly!)
 const config = new Configuration({
 	apiKey: OPENAI_KEY,
-	organization: ORG_KEY,
+	organization: ORG_KEY
 });
 const openai = new OpenAIApi(config);
 
@@ -21,28 +21,34 @@ export const POST: RequestHandler = async ({ request }) => {
 	const response = await openai.createChatCompletion({
 		model: 'gpt-3.5-turbo',
 		stream: true,
-		messages
+		messages,
+		max_tokens: 500,
+		temperature: 0.7,
+		top_p: 1,
+		frequency_penalty: 1,
+		presence_penalty: 1
 	});
 	// Convert the response into a friendly text-stream
-	const stream = OpenAIStream(response
-    //     , {
-	// 	onStart: async () => {
-	// 		// This callback is called when the stream starts
-	// 		// You can use this to save the prompt to your database
-	// 		await savePromptToDatabase(prompt);
-	// 	},
-	// 	onToken: async (token: string) => {
-	// 		// This callback is called for each token in the stream
-	// 		// You can use this to debug the stream or save the tokens to your database
-	// 		console.log(token);
-	// 	},
-	// 	onCompletion: async (completion: string) => {
-	// 		// This callback is called when the stream completes
-	// 		// You can use this to save the final completion to your database
-	// 		await saveCompletionToDatabase(completion);
-	// 	}
-	// }
-    );
+	const stream = OpenAIStream(
+		response
+		//     , {
+		// 	onStart: async () => {
+		// 		// This callback is called when the stream starts
+		// 		// You can use this to save the prompt to your database
+		// 		await savePromptToDatabase(prompt);
+		// 	},
+		// 	onToken: async (token: string) => {
+		// 		// This callback is called for each token in the stream
+		// 		// You can use this to debug the stream or save the tokens to your database
+		// 		console.log(token);
+		// 	},
+		// 	onCompletion: async (completion: string) => {
+		// 		// This callback is called when the stream completes
+		// 		// You can use this to save the final completion to your database
+		// 		await saveCompletionToDatabase(completion);
+		// 	}
+		// }
+	);
 
 	// Respond with the stream
 	return new StreamingTextResponse(stream);
