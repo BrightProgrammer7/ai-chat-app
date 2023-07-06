@@ -8,7 +8,7 @@
 </script>
 
 <h1>Welcome to ChatAI</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<p>Visit <a href="https://github.com/BrightProgrammer7/ai-chat-app.git">ai-chat-app.git</a> to read the documentation of the code source</p>
 
 <div>
 	<ul>
